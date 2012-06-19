@@ -8,8 +8,8 @@ object ApplicationBuild extends Build {
   val appVersion = "0.0.1"
 
   val appDependencies = Seq(
-    "net.databinder" %% "dispatch-http" % "0.8.8")
+    "net.databinder" %% "dispatch-http" % "0.8.8",
+    "junit" % "junit" % "4.10" % "test")
 
-  val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-  )
+  val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings()
 }

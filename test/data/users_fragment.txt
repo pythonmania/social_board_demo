@@ -1,3 +1,0 @@
-{"twid":"mikewitters"}
-{"twid":"bobrullo"}
-{"twid":"jeffgortatowsky"}
