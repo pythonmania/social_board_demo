@@ -4,24 +4,69 @@
     <head>
         <title>social board demo : graphdb vs rdbms</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap-button.js")" type="text/javascript"></script>
     </head>
     <body>
-	    <div class="row">
-			<div class="span6">
-				<h2><button id="refreshBtn" class="btn" data-loading-text="loading..." > Refresh Neo4j</button></h2>
-			</div>
-			<div class="span6">
-				<h2><button id="refreshBtn" class="btn" data-loading-text="loading..." > Refresh H2</button></h2>
-			</div>
+	    <div class="row show-grid">
+		    <div class="span4">
+		    	<button id="resetBtn" class="btn btn-large btn-primary" data-loading-text="Resetting..." >Reset</button>
+		    </div>
+		    <div class="span4">
+		    	<button id="pickBtn" class="btn btn-large btn-primary" data-loading-text="loading..." >Pick Random User</button>
+		    </div>
+		    <div class="span4">
+		    	<h2><div id="userid">-</div></h2>
+		    </div>
 		</div>
+		<div>
+			<div class="span6">
+		    	<h2>neo4j result. elapsed : <span id="neo4j_elapsed">-</span></h2>
+		    	<ul id="neo4j_result">
+		    	</ul>
+		    </div>
+			<div class="span6">
+		    	<h2>h2 result. elapsed : <span id="h2_elapsed">-</span></h2>
+		    	<ul id="h2_result">
+		    	</ul>
+		    </div>
+		</div>
+		
 		<script type="text/javascript">
-		$("#refreshBtn").click(function() {
-			$("#refreshBtn").button('loading');
-		})
+		$('#resetBtn').click(function() {
+			$('#resetBtn').button('loading');
+			$.get('reset', function(data) {
+				$('#resetBtn').button('reset')
+			});
+		});
+		
+		$('#pickBtn').click(function() {
+			clear()
+			
+			$.getJSON('pick', function(data) {
+				$('#userid').text(data.userid)
+				$.getJSON('neo4j/'+data.userid, neo4jfinish)
+			});
+		});
+		
+		function clear() {
+			$('#neo4j_result').empty();
+			$('#h2_result').empty();
+			$('#neo4j_elapsed').text('-');
+			$('#h2_elapsed').text('-');
+		}
+		
+		function neo4jfinish(data) {
+			$('#neo4j_elapsed').text(data.elapsed + " ms")
+			
+			$.each(data.data, function(key, value) {
+				$('#neo4j_result').append('<li><a href="' + value[2] + '">' + value[1] + '</a></li>')
+			})
+			
+		};
 		</script>
     </body>
 </html>

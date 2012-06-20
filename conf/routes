@@ -3,7 +3,19 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /							controllers.Application.index
+
+# reset storage
+GET		/reset						controllers.Application.reset
+
+# pick random user
+GET		/pick						controllers.Application.pick
+
+# neo4j response
+GET     /neo4j/:userid				controllers.Application.neo4j(userid)
+
+# h2 response
+GET     /h2/:userid					controllers.Application.neo4j(userid)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
