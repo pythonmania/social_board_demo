@@ -1,4 +1,4 @@
-package controllers
+package models
 
 import play.api._
 import play.api.Play.current
@@ -72,14 +72,13 @@ WHERE  r = {rownumber}
     // create user
     var usersList: List[String] = Nil
     DB.withConnection { implicit c =>
-      val users = Source fromFile (sampleUsersPath) getLines ()
+      // val users = Source fromFile (sampleUsersPath) getLines ()
+      val users = Sample.users
       users foreach (user => {
-        val userid = parse[Map[String, String]](user).getOrElse("userid", "")
-
         SQL("insert into user (userid) values ({userid})")
-          .on('userid -> userid)
+          .on('userid ->  user.userid)
           .executeInsert()
-        usersList ::= userid
+        usersList ::=  user.userid
       })
 
       c.commit
@@ -88,19 +87,19 @@ WHERE  r = {rownumber}
     // create tweet
     var tweetsList: List[String] = Nil
     DB.withConnection { implicit c =>
-      val tweets = Source fromFile (sampleTweetsPath) getLines ()
-      tweets foreach (tweets => {
-        val tweetMap = parse[Map[String, String]](tweets)
-        val tweetid = tweetMap.getOrElse("tweetid", "")
+      // val tweets = Source fromFile (sampleTweetsPath) getLines ()
+	  val tweets = Sample.tweets
+      tweets foreach (tweet => {
+        val tweetid = tweet.tweetid
 
         SQL("""
             insert into tweet (tweetid, text, link, date) 
             values ({tweetid}, {text}, {link}, {date})
             """)
-          .on('tweetid -> tweetMap.getOrElse("tweetid", ""),
-            'text -> tweetMap.getOrElse("text", ""),
-            'link -> tweetMap.getOrElse("link", ""),
-            'date -> tweetMap.getOrElse("date", ""))
+          .on('tweetid -> tweet.tweetid,
+            'text -> tweet.text,
+            'link -> tweet.link,
+            'date -> tweet.date)
           .executeInsert()
         tweetsList ::= tweetid
       })
