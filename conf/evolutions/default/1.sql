@@ -18,16 +18,18 @@ CREATE TABLE Tweet (
 CREATE TABLE User2User (
     userid varchar(255) NOT NULL,
     followerid varchar(255) NOT NULL,
-    PRIMARY KEY (userid),
-    FOREIGN KEY (followerid) REFERENCES User (userid)
 );
 
 CREATE TABLE User2Tweet (
     userid varchar(255) NOT NULL,
     tweetid varchar(255) NOT NULL,
-    PRIMARY KEY (userid),
-    FOREIGN KEY (tweetid) REFERENCES Tweet (tweetid)
 );
+
+CREATE INDEX idx_user2user 
+  ON user2user(userid, followerid); 
+
+CREATE INDEX idx_user2tweet 
+  ON user2tweet(userid, tweetid); 
 
 # --- !Downs
  
@@ -38,3 +40,7 @@ DROP TABLE Tweet;
 DROP TABLE User2User;
 
 DROP TABLE User2Tweet;
+
+DROP INDEX idx_user2user ;
+
+DROP INDEX idx_user2tweet ;

@@ -1,3 +1,5 @@
+@(neo4jQuery: String, rdbmsQuery: String)
+
 <!DOCTYPE html>
 
 <html>
@@ -22,15 +24,31 @@
 		    	<h2><div id="userid">-</div></h2>
 		    </div>
 		</div>
+		
 		<div>
 			<div class="span6">
-		    	<h2>neo4j result. elapsed : <span id="neo4j_elapsed">-</span></h2>
+		    	<h3>neo4j query</h3>
+		    	<pre>
+@neo4jQuery.trim
+		    	</pre>
+		    </div>
+			<div class="span6">
+		    	<h3>rdbms query</h3>
+		    	<pre>
+@rdbmsQuery.trim
+		    	</pre>
+		    </div>
+		</div>
+		
+		<div>
+			<div class="span6">
+		    	<h3>neo4j result. elapsed : <span id="neo4j_elapsed">-</span></h3>
 		    	<ul id="neo4j_result">
 		    	</ul>
 		    </div>
 			<div class="span6">
-		    	<h2>h2 result. elapsed : <span id="h2_elapsed">-</span></h2>
-		    	<ul id="h2_result">
+		    	<h3>rdbms result. elapsed : <span id="rdbms_elapsed">-</span></h3>
+		    	<ul id="rdbms_result">
 		    	</ul>
 		    </div>
 		</div>
@@ -49,23 +67,31 @@
 			$.getJSON('pick', function(data) {
 				$('#userid').text(data.userid)
 				$.getJSON('neo4j/'+data.userid, neo4jfinish)
+				$.getJSON('rdbms/'+data.userid, rdbmsfinish)
 			});
 		});
 		
 		function clear() {
 			$('#neo4j_result').empty();
-			$('#h2_result').empty();
+			$('#rdbms_result').empty();
 			$('#neo4j_elapsed').text('-');
-			$('#h2_elapsed').text('-');
+			$('#rdbms_elapsed').text('-');
 		}
 		
 		function neo4jfinish(data) {
-			$('#neo4j_elapsed').text(data.elapsed + " ms")
+			$('#neo4j_elapsed').text(data.elapsed + " microsecond")
 			
 			$.each(data.data, function(key, value) {
 				$('#neo4j_result').append('<li><a href="' + value[2] + '">' + value[1] + '</a></li>')
 			})
+		};
+		
+		function rdbmsfinish(data) {
+			$('#rdbms_elapsed').text(data.elapsed + " microsecond")
 			
+			$.each(data.data, function(key, value) {
+				$('#rdbms_result').append('<li><a href="' + value[2] + '">' + value[1] + '</a></li>')
+			})
 		};
 		</script>
     </body>

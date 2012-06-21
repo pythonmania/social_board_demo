@@ -8,20 +8,20 @@ import play.api.libs.json.Json
 
 @RunWith(classOf[JUnitRunner])
 class UnitTestSuite2 extends Specification {
-  "The 'Hello world' string" should {
-    "contain 11 characters" in {
+  "'Hello world' 문자열" should {
+    "11글자" in {
       "Hello world" must have size (11)
     }
-    "start with 'Hello'" in {
+    "'Hello'로 시작" in {
       "Hello world" must startWith("Hello")
     }
-    "end with 'world'" in {
+    "'world'로 끝" in {
       "Hello world" must endWith("world")
     }
   }
 
-  "the stack" should {
-    "return last input value on pop invoke" in {
+  "스택" should {
+    "pop호출시 마지막 push한 값 반환" in {
       val stack = new Stack[Int]
       stack.push(1)
       stack.push(2)
@@ -31,8 +31,8 @@ class UnitTestSuite2 extends Specification {
     }
   }
 
-  "the random" should {
-    "distribute equally" in {
+  "랜덤값" should {
+    "일관되게 분배" in {
       val random = new Random(System.currentTimeMillis())
       val list = List(1, 2, 3, 4, 5)
 
@@ -42,13 +42,6 @@ class UnitTestSuite2 extends Specification {
         print(pick + ", ")
         sum += pick
       }
-
-      val http = new Http
-
-      http(url("http://192.168.10.24:7474/db/data/node/2/relationships")
-        << (Json.toJson(Map("to" -> "http://192.168.10.24:7474/db/data/node/3", "type" -> "FOLLOWS")).toString, "application/json")
-        >:> { header => header getOrElse ("Location", Set()) head
-        })
 
       val avg = sum / 100
       println("\n\navg : " + avg)
