@@ -93,10 +93,10 @@ LIMIT 20"""
     var usersList: List[String] = Nil
     // val users = Source fromFile (sampleUsersPath) getLines ()
     val users = Sample.users
-
+  
     users foreach (user => {
       // val userLocation = createNode(user)
-      val userLocation = createNode(Map("userid" -> user.userid))
+	  val userLocation = createNode(Map("userid" -> user.userid))
       createRelation(usersLocation, userLocation, "USER")
       usersList ::= userLocation
     })
@@ -104,11 +104,11 @@ LIMIT 20"""
     // create tweet node
     var tweetsList: List[String] = Nil
     // val tweets = Source fromFile (sampleTweetsPath) getLines ()
-    val tweets = Sample.tweets
-
+	val tweets = Sample.tweets
+	
     tweets foreach (tweet => {
       // val tweetLocation = createNode(tweet)
-      val tweetLocation = createNode(
+	  val tweetLocation = createNode(
         Map("tweetid" -> tweet.tweetid,
           "text" -> tweet.text,
           "link" -> tweet.link,
