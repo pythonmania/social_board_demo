@@ -8,7 +8,6 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db._
 
-
 object Rdbms {
   val random = new Random()
   val tweetsQuery = """SELECT t.tweetid, 
