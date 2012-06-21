@@ -3,12 +3,11 @@ package models
 import play.api._
 import play.api.Play.current
 import com.codahale.jerkson.Json._
-import java.util.Date
 import scala.util.Random
-import scala.io.Source
 import anorm._
 import anorm.SqlParser._
 import play.api.db._
+
 
 object Rdbms {
   val random = new Random()

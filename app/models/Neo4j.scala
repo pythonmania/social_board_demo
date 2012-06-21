@@ -4,9 +4,7 @@ import play.api._
 import play.api.Play.current
 import com.codahale.jerkson.Json._
 import dispatch._
-import java.util.Date
 import scala.util.Random
-import scala.io.Source
 
 object Neo4j {
 
@@ -15,7 +13,7 @@ object Neo4j {
   val neo4jCypherUrl = url(neo4jhost + "/db/data/cypher")
   val neo4jRootNode = neo4jhost + "/db/data/node/0"
   val random = new Random()
- 
+
   val tweetsQuery = """START user=node:node_auto_index(userid = {userid})
 MATCH user-[:FOLLOWS]->follower-[:TWEETED]->tweet
 RETURN tweet.tweetid as id, tweet.text as text, tweet.link as link, tweet.date as date 
@@ -95,10 +93,10 @@ LIMIT 20"""
     var usersList: List[String] = Nil
     // val users = Source fromFile (sampleUsersPath) getLines ()
     val users = Sample.users
-  
+
     users foreach (user => {
       // val userLocation = createNode(user)
-	  val userLocation = createNode(Map("userid" -> user.userid))
+      val userLocation = createNode(Map("userid" -> user.userid))
       createRelation(usersLocation, userLocation, "USER")
       usersList ::= userLocation
     })
@@ -106,11 +104,11 @@ LIMIT 20"""
     // create tweet node
     var tweetsList: List[String] = Nil
     // val tweets = Source fromFile (sampleTweetsPath) getLines ()
-	val tweets = Sample.tweets
-	
+    val tweets = Sample.tweets
+
     tweets foreach (tweet => {
       // val tweetLocation = createNode(tweet)
-	  val tweetLocation = createNode(
+      val tweetLocation = createNode(
         Map("tweetid" -> tweet.tweetid,
           "text" -> tweet.text,
           "link" -> tweet.link,
